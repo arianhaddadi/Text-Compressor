@@ -9,7 +9,7 @@ class Codec {
 public:
     void compress(Tree *tree, vector<string> &result, const string &fileContent);
     void decompress(const string &fileContent, vector<string> &result);
-    int getHuffmanCodes(map<string, char> *codeToCharMap, const string &keys);
+    int getHuffmanCodes(map<string, unsigned char> *codeToCharMap, const string &keys);
 };
 
 

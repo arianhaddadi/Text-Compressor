@@ -26,7 +26,6 @@ void FileIO::write(const string &filename, vector<string> &content) {
                 for (int j = 0; j < 8 - substringSize; j++)
                     substring += "0";
             }
-
             char c = bitset<8>(substring).to_ulong();
 
             outfile.write(&c, sizeof(c));
