@@ -8,7 +8,7 @@ class Tree {
 public:
     Tree() {
         root = nullptr;
-        for (int i = 0; i < 255; i++) {
+        for (int i = 0; i < 256; i++) {
             charFreqMap[i] = 0;
         }
     }
@@ -18,7 +18,7 @@ public:
 private:
     Node* root;
     map<unsigned char, int> charFreqMap;
-    priority_queue<Node*, vector<Node*>, decltype([](Node* lhs, Node* rhs) {return rhs->getFreq() < lhs->getFreq(); })> nodesQueue;
+    priority_queue<Node*, vector<Node*>, decltype([](Node* lhs, Node* rhs) {return rhs->getFreq() <= lhs->getFreq(); })> nodesQueue;
 
     void fillCharFreqMap(string &fileContent);
     void makeInitialNodes();

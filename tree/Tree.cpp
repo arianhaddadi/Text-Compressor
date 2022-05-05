@@ -22,7 +22,7 @@ void Tree::makeTree(string &fileContent) {
 
 void Tree::makeInitialNodes() {
     Node* newNode;
-    for (int i = 0; i < 255; i++) {
+    for (int i = 0; i < 256; i++) {
         newNode = new Node(nullptr, nullptr, charFreqMap[i], i);
         nodesQueue.push(newNode);
     }
