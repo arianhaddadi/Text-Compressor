@@ -7,6 +7,7 @@
 #include <map>
 #include <queue>
 #include <fstream>
+#include <bitset>
 
 using namespace std;
 

@@ -1,8 +1,7 @@
 #include "Tree.h"
 
-
-void Tree::makeTree(string fileName) {
-    fillCharFreqMap(fileName);
+void Tree::makeTree(string &fileContent) {
+    fillCharFreqMap(fileContent);
     makeInitialNodes();
 
     Node *node1, *node2, *newNode;
@@ -29,14 +28,22 @@ void Tree::makeInitialNodes() {
     }
 }
 
-void Tree::fillCharFreqMap(string filename) {
-    ifstream infile(filename);
-    char* character = new char[1];
-
-    while (!infile.eof()) {
-        infile.read(character, 1);
-        charFreqMap[*character]++;
+void Tree::fillCharFreqMap(string &fileContent) {
+    for (int i = 0; i < fileContent.size(); i++) {
+        charFreqMap[fileContent[i]]++;
     }
+}
 
-    infile.close();
+void Tree::getCodes(vector<string> &codes) {
+    dfs(root, codes, "");
+}
+
+void Tree::dfs(Node *node, vector<string> &codes, string code) {
+    if (node->getRight() == nullptr && node->getLeft() == nullptr) {
+        codes[node->getSymbol()] = code;
+    }
+    else {
+        dfs(node->getRight(), codes, code + "1");
+        dfs(node->getLeft(), codes, code + "0");
+    }
 }
