@@ -28,7 +28,7 @@ void Codec::decompress(const string &fileContent, vector<string> &result) {
     }
 
     if (compressedSize % 8 != 0) {
-        compressedBits.erase(compressedBits.begin() + compressedSize);
+        compressedBits.erase(compressedBits.begin() + compressedSize, compressedBits.end());
     }
 
     string codeToken, originalString;
@@ -54,7 +54,12 @@ void Codec::compress(Tree *tree, vector<string> &result, const string &fileConte
 
     string firstLine;
     for (const string &s : codes) {
-        firstLine += s + " ";
+        if (s.empty()) {
+            firstLine += "2 "; // 2 means that this character was not in the original file
+        }
+        else {
+            firstLine += s + " ";
+        }
     }
     firstLine += to_string(compressed.size()) + '\n';
 
