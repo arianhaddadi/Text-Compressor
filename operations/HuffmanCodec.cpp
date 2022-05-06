@@ -1,6 +1,6 @@
-#include "Codec.h"
+#include "HuffmanCodec.h"
 
-int Codec::getHuffmanCodes(map<string, unsigned char> *codeToCharMap, const string &keys) {
+int HuffmanCodec::getHuffmanCodes(map<string, unsigned char> *codeToCharMap, const string &keys) {
     stringstream ss(keys);
     string key;
 
@@ -14,7 +14,7 @@ int Codec::getHuffmanCodes(map<string, unsigned char> *codeToCharMap, const stri
     return compressedSize;
 }
 
-void Codec::decompress(const string &keys, const string &compressed, string *decompressed) {
+void HuffmanCodec::decompress(const string &keys, const string &compressed, string *decompressed) {
 
     map<string, unsigned char> codeToCharMap;
     int compressedSize = getHuffmanCodes(&codeToCharMap, keys);
@@ -35,10 +35,9 @@ void Codec::decompress(const string &keys, const string &compressed, string *dec
             codeToken.erase();
         }
     }
-
 }
 
-void Codec::compress(Tree *tree, string *firstLine, string *compressed, const string &fileContent) {
+void HuffmanCodec::compress(Tree *tree, string *firstLine, string *compressed, const string &fileContent) {
     vector<string> codes(256);
 
     tree->getCodes(&codes);

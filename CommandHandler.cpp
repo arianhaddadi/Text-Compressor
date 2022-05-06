@@ -1,8 +1,9 @@
 #include "CommandHandler.h"
 #include "tree/Tree.h"
-#include "operations/Codec.h"
+#include "operations/HuffmanCodec.h"
 #include "operations/FileIO.h"
 #include "operations/Cipherer.h"
+#include "operations/LZ77Codec.h"
 
 
 void CommandHandler::execute() {
@@ -11,17 +12,20 @@ void CommandHandler::execute() {
     FileIO::read(inputFile, inputFileContent);
 
     if (command == "compress" || command == "compress_encrypt") {
-        Tree *tree = new Tree();
-        tree->makeTree(inputFileContent);
+        string lzCompressed;
+        LZ77Codec::compress(inputFileContent, &lzCompressed);
 
-        string firstLine, compressed;
-        Codec::compress(tree, &firstLine, &compressed, inputFileContent);
+        Tree *tree = new Tree();
+        tree->makeTree(lzCompressed);
+
+        string firstLine, huffmanCompressed;
+        HuffmanCodec::compress(tree, &firstLine, &huffmanCompressed, lzCompressed);
         if (command == "compress_encrypt") {
-            Cipherer::encrypt(kNum, &compressed);
+            Cipherer::encrypt(kNum, &huffmanCompressed);
         }
 
         result.push_back(firstLine);
-        result.push_back(compressed);
+        result.push_back(huffmanCompressed);
         FileIO::write(outputFile, result);
     }
     else if (command == "encrypt") {
@@ -38,10 +42,14 @@ void CommandHandler::execute() {
             Cipherer::decrypt(kNum, &compressed);
         }
 
-        string decompressed;
-        Codec::decompress(keys, compressed, &decompressed);
+        string huffmanDecompressed;
+        HuffmanCodec::decompress(keys, compressed, &huffmanDecompressed);
 
-        result.push_back(decompressed);
+        string lzDecompressed;
+        LZ77Codec::decompress(huffmanDecompressed, &lzDecompressed);
+
+
+        result.push_back(lzDecompressed);
         FileIO::write(outputFile, result);
     }
     else if (command == "decrypt") {

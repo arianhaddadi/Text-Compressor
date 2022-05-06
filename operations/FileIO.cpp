@@ -2,8 +2,8 @@
 
 void FileIO::read(const string &filename, string &content) {
     ifstream infile(filename);
-    string line;
 
+    string line;
     while (getline(infile, line)) {
         content += line + "\n";
     }

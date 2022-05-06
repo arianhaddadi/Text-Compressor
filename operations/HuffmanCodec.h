@@ -1,11 +1,11 @@
-#ifndef COMPRESSOR_CODEC_H
-#define COMPRESSOR_CODEC_H
+#ifndef COMPRESSOR_HUFFMANCODEC_H
+#define COMPRESSOR_HUFFMANCODEC_H
 
 #include "../Common.h"
 #include "../tree/Tree.h"
 
 
-class Codec {
+class HuffmanCodec {
 public:
     static void compress(Tree *tree, string *firstLine, string *compressed, const string &fileContent);
     static void decompress(const string &keys, const string &compressed, string *decompressed);
@@ -15,4 +15,4 @@ private:
 };
 
 
-#endif //COMPRESSOR_CODEC_H
+#endif //COMPRESSOR_HUFFMANCODEC_H
