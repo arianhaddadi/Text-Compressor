@@ -24,6 +24,11 @@ void CommandHandler::execute() {
         result.push_back(compressed);
         FileIO::write(outputFile, result);
     }
+    else if (command == "encrypt") {
+        Cipherer::encrypt(kNum, &inputFileContent);
+        result.push_back(inputFileContent);
+        FileIO::write(outputFile, result);
+    }
     else if(command == "decompress" || command == "decrypt_decompress") {
         size_t lineBreak = inputFileContent.find('\n');
         string keys = inputFileContent.substr(0, lineBreak);
@@ -37,6 +42,11 @@ void CommandHandler::execute() {
         Codec::decompress(keys, compressed, &decompressed);
 
         result.push_back(decompressed);
+        FileIO::write(outputFile, result);
+    }
+    else if (command == "decrypt") {
+        Cipherer::decrypt(kNum, &inputFileContent);
+        result.push_back(inputFileContent);
         FileIO::write(outputFile, result);
     }
     else {

@@ -31,8 +31,8 @@ void Tree::makeInitialNodes() {
 }
 
 void Tree::fillCharFreqMap(const string &inputFileContent) {
-    for (int i = 0; i < inputFileContent.size(); i++) {
-        charFreqMap[inputFileContent[i]]++;
+    for (unsigned char i : inputFileContent) {
+        charFreqMap[i]++;
     }
 }
 
