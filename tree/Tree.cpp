@@ -1,7 +1,7 @@
 #include "Tree.h"
 
-void Tree::makeTree(string &fileContent) {
-    fillCharFreqMap(fileContent);
+void Tree::makeTree(const string &inputFileContent) {
+    fillCharFreqMap(inputFileContent);
     makeInitialNodes();
 
     Node *node1, *node2, *newNode;
@@ -30,9 +30,9 @@ void Tree::makeInitialNodes() {
     }
 }
 
-void Tree::fillCharFreqMap(string &fileContent) {
-    for (int i = 0; i < fileContent.size(); i++) {
-        charFreqMap[fileContent[i]]++;
+void Tree::fillCharFreqMap(const string &inputFileContent) {
+    for (int i = 0; i < inputFileContent.size(); i++) {
+        charFreqMap[inputFileContent[i]]++;
     }
 }
 

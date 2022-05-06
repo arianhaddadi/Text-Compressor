@@ -14,13 +14,13 @@ public:
     }
 
     void getCodes(vector<string> &codes);
-    void makeTree(string &fileContent);
+    void makeTree(const string &inputFileContent);
 private:
     Node* root;
     map<unsigned char, int> charFreqMap;
     priority_queue<Node*, vector<Node*>, decltype([](Node* lhs, Node* rhs) {return rhs->getFreq() <= lhs->getFreq(); })> nodesQueue;
 
-    void fillCharFreqMap(string &fileContent);
+    void fillCharFreqMap(const string &inputFileContent);
     void makeInitialNodes();
     void dfs(Node* node, vector<string> &codes, string code);
 };
