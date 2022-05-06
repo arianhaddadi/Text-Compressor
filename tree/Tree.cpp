@@ -36,13 +36,13 @@ void Tree::fillCharFreqMap(const string &inputFileContent) {
     }
 }
 
-void Tree::getCodes(vector<string> &codes) {
+void Tree::getCodes(vector<string> *codes) {
     dfs(root, codes, "");
 }
 
-void Tree::dfs(Node *node, vector<string> &codes, string code) {
+void Tree::dfs(Node *node, vector<string> *codes, const string &code) {
     if (node->getRight() == nullptr && node->getLeft() == nullptr) {
-        codes[node->getSymbol()] = code;
+        (*codes)[node->getSymbol()] = code;
     }
     else {
         dfs(node->getRight(), codes, code + "1");

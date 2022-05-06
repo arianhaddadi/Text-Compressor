@@ -41,7 +41,7 @@ void Codec::decompress(const string &keys, const string &compressed, string *dec
 void Codec::compress(Tree *tree, string *firstLine, string *compressed, const string &fileContent) {
     vector<string> codes(256);
 
-    tree->getCodes(codes);
+    tree->getCodes(&codes);
     string compressedBits;
     for (unsigned char c : fileContent) {
         compressedBits += codes[c];

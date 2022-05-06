@@ -6,7 +6,7 @@
 class FileIO {
 public:
     static void read(const string &filename, string &content);
-    static void write(const string &filename, vector<string> &content);
+    static void write(const string &filename, const vector<string> &content);
 };
 
 

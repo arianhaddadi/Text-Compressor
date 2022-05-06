@@ -13,7 +13,7 @@ public:
         }
     }
 
-    void getCodes(vector<string> &codes);
+    void getCodes(vector<string> *codes);
     void makeTree(const string &inputFileContent);
 private:
     Node* root;
@@ -22,7 +22,7 @@ private:
 
     void fillCharFreqMap(const string &inputFileContent);
     void makeInitialNodes();
-    void dfs(Node* node, vector<string> &codes, string code);
+    void dfs(Node* node, vector<string> *codes, const string &code);
 };
 
 
