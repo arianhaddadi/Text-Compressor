@@ -34,11 +34,11 @@ void LZ77Codec::compress(const string &inputFileContent, string *compressed) {
                 matchCursorLeft++;
             }
         }
-        token = to_string(currentIndex - foundMatch.index) + "|";
-        token += to_string(foundMatch.length) + "|";
+        token = to_string(currentIndex - foundMatch.index) + "_";
+        token += to_string(foundMatch.length) + "_";
         if (currentIndex + foundMatch.length < inputFileContent.size()) {
             token += inputFileContent[currentIndex + foundMatch.length];
-            token += "|";
+            token += "_";
         }
         else {
             token += "00";
@@ -52,9 +52,13 @@ void LZ77Codec::decompress(const string &inputFileContent, string *decompressed)
     stringstream ss(inputFileContent);
     string leftOffset, length, nextChar;
 
-    while (getline(ss, leftOffset, '|')) {
-        getline(ss, length, '|');
-        getline(ss, nextChar, '|');
+    while (getline(ss, leftOffset, '_')) {
+        getline(ss, length, '_');
+        getline(ss, nextChar, '_');
+        if (nextChar.empty()) { // if the delimiter is the same as the character
+            getline(ss, nextChar, '_');
+            nextChar = "_";
+        }
 
         (*decompressed) += (*decompressed).substr((*decompressed).size() - stoi(leftOffset), stoi(length));
         if (nextChar != "00") {
