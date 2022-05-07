@@ -48,7 +48,6 @@ void CommandHandler::execute() {
         string lzDecompressed;
         LZ77Codec::decompress(huffmanDecompressed, &lzDecompressed);
 
-
         result.push_back(lzDecompressed);
         FileIO::write(outputFile, result);
     }
