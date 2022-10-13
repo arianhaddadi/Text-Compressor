@@ -1,7 +1,7 @@
-# Deflate_Caesar Encryption and Cipher
+# Deflate_Caesar Encoding and Encryption
 This project is an implementation of [Deflate](https://en.wikipedia.org/wiki/Deflate#Encoder/compressor) 
-(i.e., [LZ77](https://en.wikipedia.org/wiki/LZ77_and_LZ78) and [Huffman Coding](https://en.wikipedia.org/wiki/Huffman_coding)) and 
-[Caesar Cipher](https://en.wikipedia.org/wiki/Caesar_cipher) algorithms for text input files. 
+(i.e., [LZ77](https://en.wikipedia.org/wiki/LZ77_and_LZ78) and [Huffman Coding](https://en.wikipedia.org/wiki/Huffman_coding)) Encoding Algorithm and 
+[Caesar Cipher](https://en.wikipedia.org/wiki/Caesar_cipher) Algorithm for text input files. 
 
 ## How to run
 This is a CMake project. The executable file after building the project is named `deflate_caesar`.
