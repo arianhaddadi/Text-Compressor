@@ -1,4 +1,4 @@
-# Deflate_Caesar Encoding and Encryption
+# Text Compressor & Encoder
 This project is an implementation of [Deflate](https://en.wikipedia.org/wiki/Deflate#Encoder/compressor) 
 (i.e., [LZ77](https://en.wikipedia.org/wiki/LZ77_and_LZ78) and [Huffman Coding](https://en.wikipedia.org/wiki/Huffman_coding)) Encoding Algorithm and 
 [Caesar Cipher](https://en.wikipedia.org/wiki/Caesar_cipher) Algorithm for text input files. 
