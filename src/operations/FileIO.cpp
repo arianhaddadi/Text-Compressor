@@ -1,9 +1,9 @@
 #include "FileIO.h"
 
-void FileIO::read(const string &filename, string &content) {
-    ifstream infile(filename);
+void FileIO::read(const std::string &filename, std::string &content) {
+    std::ifstream infile(filename);
 
-    string line;
+    std::string line;
     while (getline(infile, line)) {
         content += line + "\n";
     }
@@ -12,10 +12,10 @@ void FileIO::read(const string &filename, string &content) {
     infile.close();
 }
 
-void FileIO::write(const string &filename, const vector<string> &content) {
-    ofstream outfile(filename);
+void FileIO::write(const std::string &filename, const std::vector<std::string> &content) {
+    std::ofstream outfile(filename);
 
-    for (const string& s: content) {
+    for (const std::string &s: content) {
         outfile << s;
     }
 

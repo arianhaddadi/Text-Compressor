@@ -1,16 +1,15 @@
 #ifndef COMPRESSOR_LZ77CODEC_H
 #define COMPRESSOR_LZ77CODEC_H
 
-#include "../Common.h"
+#include "../common.h"
 
 
 class LZ77Codec {
 public:
-    static void compress(const string &inputFileContent, string *compressed);
-    static void decompress(const string &inputFileContent, string *decompressed);
+    static void compress(const std::string &inputFileContent, std::string *compressed);
+    static void decompress(const std::string &inputFileContent, std::string *decompressed);
 private:
-    class Match {
-    public:
+    struct Match {
         int index;
         int length;
     };

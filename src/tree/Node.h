@@ -1,12 +1,13 @@
 #ifndef COMPRESSOR_NODE_H
 #define COMPRESSOR_NODE_H
 
-#include "../Common.h"
+#include "../common.h"
 
 
 class Node {
 public:
-    Node(Node* right, Node* left, int freq, unsigned char symbol = '\0'): right(right), left(left), freq(freq), symbol(symbol) {}
+    Node(Node* right, Node* left, int freq, unsigned char symbol = '\0'): right(right), left(left), freq(freq),
+                                                                          symbol(symbol) {}
 
     Node* getRight() {
         return right;

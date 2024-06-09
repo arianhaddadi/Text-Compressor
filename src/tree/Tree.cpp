@@ -1,6 +1,6 @@
 #include "Tree.h"
 
-void Tree::makeTree(const string &inputFileContent) {
+void Tree::makeTree(const std::string &inputFileContent) {
     fillCharFreqMap(inputFileContent);
     makeInitialNodes();
 
@@ -30,17 +30,17 @@ void Tree::makeInitialNodes() {
     }
 }
 
-void Tree::fillCharFreqMap(const string &inputFileContent) {
+void Tree::fillCharFreqMap(const std::string &inputFileContent) {
     for (unsigned char i : inputFileContent) {
         charFreqMap[i]++;
     }
 }
 
-void Tree::getCodes(vector<string> *codes) {
+void Tree::getCodes(std::vector<std::string> *codes) {
     dfs(root, codes, "");
 }
 
-void Tree::dfs(Node *node, vector<string> *codes, const string &code) {
+void Tree::dfs(Node *node, std::vector<std::string> *codes, const std::string &code) {
     if (node->getRight() == nullptr && node->getLeft() == nullptr) {
         (*codes)[node->getSymbol()] = code;
     }

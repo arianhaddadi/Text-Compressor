@@ -1,12 +1,12 @@
 #ifndef COMPRESSOR_FILEIO_H
 #define COMPRESSOR_FILEIO_H
 
-#include "../Common.h"
+#include "../common.h"
 
 class FileIO {
 public:
-    static void read(const string &filename, string &content);
-    static void write(const string &filename, const vector<string> &content);
+    static void read(const std::string &filename, std::string &content);
+    static void write(const std::string &filename, const std::vector<std::string> &content);
 };
 
 

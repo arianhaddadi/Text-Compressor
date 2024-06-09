@@ -3,7 +3,6 @@
 
 #include "Node.h"
 
-
 class Tree {
 public:
     Tree() {
@@ -13,16 +12,17 @@ public:
         }
     }
 
-    void getCodes(vector<string> *codes);
-    void makeTree(const string &inputFileContent);
+    void getCodes(std::vector<std::string> *codes);
+    void makeTree(const std::string &inputFileContent);
 private:
     Node* root;
-    map<unsigned char, int> charFreqMap;
-    priority_queue<Node*, vector<Node*>, decltype([](Node* lhs, Node* rhs) {return rhs->getFreq() <= lhs->getFreq(); })> nodesQueue;
+    std::map<unsigned char, int> charFreqMap;
+    std::priority_queue<Node*, std::vector<Node*>,
+            decltype([](Node* lhs, Node* rhs) {return rhs->getFreq() <= lhs->getFreq(); })> nodesQueue;
 
-    void fillCharFreqMap(const string &inputFileContent);
+    void fillCharFreqMap(const std::string &inputFileContent);
     void makeInitialNodes();
-    void dfs(Node* node, vector<string> *codes, const string &code);
+    void dfs(Node* node, std::vector<std::string> *codes, const std::string &code);
 };
 
 

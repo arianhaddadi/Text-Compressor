@@ -1,13 +1,13 @@
 #include "LZ77Codec.h"
 
 
-void LZ77Codec::compress(const string &inputFileContent, string *compressed) {
+void LZ77Codec::compress(const std::string &inputFileContent, std::string *compressed) {
     int windowSize = 32 * 1024; // Slicing Window size is 32KB
     int currentIndex = 0, matchCursorLeft, matchCursorRight, matchedLength, foundMatchIndexLeft;
     Match foundMatch;
-    string token;
+    std::string token;
     while (currentIndex < inputFileContent.size()) {
-        matchCursorLeft = max(0, currentIndex - windowSize);
+        matchCursorLeft = std::max(0, currentIndex - windowSize);
         foundMatch.length = 0;
         foundMatch.index = currentIndex;
         while(matchCursorLeft < currentIndex) {
@@ -17,7 +17,8 @@ void LZ77Codec::compress(const string &inputFileContent, string *compressed) {
                 matchCursorLeft++;
                 matchedLength = 1;
                 while (matchCursorLeft < currentIndex && matchCursorRight < inputFileContent.size()) {
-                    if (matchedLength > 256 || inputFileContent[matchCursorLeft] != inputFileContent[matchCursorRight]) {
+                    if (matchedLength > 256 ||
+                        inputFileContent[matchCursorLeft] != inputFileContent[matchCursorRight]) {
                         break;
                     }
                     matchedLength++;
@@ -34,8 +35,8 @@ void LZ77Codec::compress(const string &inputFileContent, string *compressed) {
                 matchCursorLeft++;
             }
         }
-        token = to_string(currentIndex - foundMatch.index) + "_";
-        token += to_string(foundMatch.length) + "_";
+        token = std::to_string(currentIndex - foundMatch.index) + "_";
+        token += std::to_string(foundMatch.length) + "_";
         if (currentIndex + foundMatch.length < inputFileContent.size()) {
             token += inputFileContent[currentIndex + foundMatch.length];
             token += "_";
@@ -48,9 +49,9 @@ void LZ77Codec::compress(const string &inputFileContent, string *compressed) {
     }
 }
 
-void LZ77Codec::decompress(const string &inputFileContent, string *decompressed) {
-    stringstream ss(inputFileContent);
-    string leftOffset, length, nextChar;
+void LZ77Codec::decompress(const std::string &inputFileContent, std::string *decompressed) {
+    std::stringstream ss(inputFileContent);
+    std::string leftOffset, length, nextChar;
 
     while (getline(ss, leftOffset, '_')) {
         getline(ss, length, '_');

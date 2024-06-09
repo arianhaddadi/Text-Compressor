@@ -1,17 +1,17 @@
 #ifndef COMPRESSOR_HUFFMANCODEC_H
 #define COMPRESSOR_HUFFMANCODEC_H
 
-#include "../Common.h"
+#include "../common.h"
 #include "../tree/Tree.h"
 
 
 class HuffmanCodec {
 public:
-    static void compress(Tree *tree, string *firstLine, string *compressed, const string &fileContent);
-    static void decompress(const string &keys, const string &compressed, string *decompressed);
+    static void compress(Tree *tree, std::string *firstLine, std::string *compressed, const std::string &fileContent);
+    static void decompress(const std::string &keys, const std::string &compressed, std::string *decompressed);
 
 private:
-    static int getHuffmanCodes(map<string, unsigned char> *codeToCharMap, const string &keys);
+    static int getHuffmanCodes(std::map<std::string, unsigned char> *codeToCharMap, const std::string &keys);
 };
 
 

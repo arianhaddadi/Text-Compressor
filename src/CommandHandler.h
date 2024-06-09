@@ -1,18 +1,19 @@
-#ifndef COMPRESSOR_COMMANDHANDLER_H
-#define COMPRESSOR_COMMANDHANDLER_H
+#ifndef COMPRESSOR_CMDHNDLR_H
+#define COMPRESSOR_CMDHNDLR_H
 
-#include "Common.h"
+#include "common.h"
 
 
 class CommandHandler {
 public:
-    CommandHandler(string inputFile, string outputFile, string command, string kNum): inputFile(inputFile), outputFile(outputFile), command(command), kNum(stoi(kNum)) {}
+    CommandHandler(std::string inputFile, std::string outputFile, std::string command, std::string kNum):
+        inputFile(inputFile), outputFile(outputFile), command(command), kNum(stoi(kNum)) {}
     void execute();
 private:
-    string inputFile;
-    string outputFile;
-    string command;
+    std::string inputFile;
+    std::string outputFile;
+    std::string command;
     int kNum;
 };
 
-#endif //COMPRESSOR_COMMANDHANDLER_H
+#endif //COMPRESSOR_CMDHNDLR_H

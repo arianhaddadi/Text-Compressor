@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
         string outputFilename = argv[3];
         string kNum = (argc == 5) ? argv[4] : "0";
 
-        CommandHandler *commandHandler = new CommandHandler(inputFilename, outputFilename, command, kNum);
+        auto *commandHandler = new CommandHandler(inputFilename, outputFilename, command, kNum);
         commandHandler->execute();
     }
     return 0;
