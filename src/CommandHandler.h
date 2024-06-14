@@ -6,14 +6,9 @@
 
 class CommandHandler {
 public:
-    CommandHandler(std::string inputFile, std::string outputFile, std::string command, std::string kNum):
-        inputFile(inputFile), outputFile(outputFile), command(command), kNum(stoi(kNum)) {}
-    void execute();
+    static void execute(const std::string &inputFile, const std::string &outputFile, const std::string &command,
+                        int kNum);
 private:
-    std::string inputFile;
-    std::string outputFile;
-    std::string command;
-    int kNum;
 };
 
 #endif //COMPRESSOR_CMDHNDLR_H

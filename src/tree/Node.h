@@ -3,11 +3,13 @@
 
 #include "../common.h"
 
+#define NULL_SYMBOL '\0'
 
 class Node {
 public:
-    Node(Node* right, Node* left, int freq, unsigned char symbol = '\0'): right(right), left(left), freq(freq),
-                                                                          symbol(symbol) {}
+    Node(unsigned char symbol, int freq, Node* right = nullptr,
+         Node* left = nullptr): symbol(symbol), freq(freq),
+                                right(right), left(left) {}
 
     Node* getRight() {
         return right;
@@ -30,6 +32,12 @@ private:
     unsigned char symbol;
     Node* right;
     Node* left;
+};
+
+struct NodeComparator {
+    bool operator()(Node* lhs, Node* rhs) const {
+        return rhs->getFreq() <= lhs->getFreq();
+    }
 };
 
 
