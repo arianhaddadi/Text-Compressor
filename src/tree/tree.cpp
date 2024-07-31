@@ -1,4 +1,4 @@
-#include "Tree.h"
+#include "tree.h"
 
 void Tree::makeTree(const std::string &inputFileContent) {
     fillCharFreqMap(inputFileContent);
@@ -12,7 +12,9 @@ void Tree::makeTree(const std::string &inputFileContent) {
         node2 = nodesQueue.top();
         nodesQueue.pop();
 
-        newNode = new Node(node1, node2, node1->getFreq() + node2->getFreq());
+        // internal nodes of the tree do not represent a character, so NULL_SYMBOL is used as their symbol
+        newNode = new Node(NULL_SYMBOL, node1->getFreq() + node2->getFreq(), node1, node2);
+
         nodesQueue.push(newNode);
     }
 
@@ -23,8 +25,8 @@ void Tree::makeTree(const std::string &inputFileContent) {
 void Tree::makeInitialNodes() {
     Node* newNode;
     for (int i = 0; i < 256; i++) {
-        if (charFreqMap[i] > 0) {
-            newNode = new Node(nullptr, nullptr, charFreqMap[i], i);
+        if (charToFreqMap[i] > 0) {
+            newNode = new Node(i, charToFreqMap[i]);
             nodesQueue.push(newNode);
         }
     }
@@ -32,20 +34,20 @@ void Tree::makeInitialNodes() {
 
 void Tree::fillCharFreqMap(const std::string &inputFileContent) {
     for (unsigned char i : inputFileContent) {
-        charFreqMap[i]++;
+        charToFreqMap[i]++;
     }
 }
 
-void Tree::getCodes(std::vector<std::string> *codes) {
-    dfs(root, codes, "");
+void Tree::getCodes(std::vector<std::string> &codes) const {
+    dfs(root, codes);
 }
 
-void Tree::dfs(Node *node, std::vector<std::string> *codes, const std::string &code) {
+void Tree::dfs(Node *node, std::vector<std::string> &codes, const std::string &code) const {
     if (node->getRight() == nullptr && node->getLeft() == nullptr) {
-        (*codes)[node->getSymbol()] = code;
+        codes[node->getSymbol()] = code;
     }
     else {
-        dfs(node->getRight(), codes, code + "1");
-        dfs(node->getLeft(), codes, code + "0");
+        dfs(node->getRight(), codes, code + RIGHT_CHILD_CHAR);
+        dfs(node->getLeft(), codes, code + LEFT_CHILD_CHAR);
     }
 }

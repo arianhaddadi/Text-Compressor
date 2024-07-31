@@ -1,8 +1,8 @@
-#include "LZ77Codec.h"
+#include "lz77_codec.h"
 
 
-void LZ77Codec::compress(const std::string &inputFileContent, std::string *compressed) {
-    int windowSize = 32 * 1024; // Slicing Window size is 32KB
+void LZ77Codec::compress(const std::string &inputFileContent, std::string &compressed) {
+    int windowSize = SLICING_WINDOW_SIZE * 1024;
     int currentIndex = 0, matchCursorLeft, matchCursorRight, matchedLength, foundMatchIndexLeft;
     Match foundMatch;
     std::string token;
@@ -35,35 +35,36 @@ void LZ77Codec::compress(const std::string &inputFileContent, std::string *compr
                 matchCursorLeft++;
             }
         }
-        token = std::to_string(currentIndex - foundMatch.index) + "_";
-        token += std::to_string(foundMatch.length) + "_";
+        token = std::to_string(currentIndex - foundMatch.index) + DELIMITER;
+        token += std::to_string(foundMatch.length) + DELIMITER;
         if (currentIndex + foundMatch.length < inputFileContent.size()) {
             token += inputFileContent[currentIndex + foundMatch.length];
-            token += "_";
+            token += DELIMITER;
         }
         else {
-            token += "00";
+            token += EOF_SIGN;
         }
         currentIndex += foundMatch.length + 1;
-        (*compressed) += token;
+        compressed += token;
     }
 }
 
-void LZ77Codec::decompress(const std::string &inputFileContent, std::string *decompressed) {
+void LZ77Codec::decompress(const std::string &inputFileContent, std::string &decompressed) {
     std::stringstream ss(inputFileContent);
     std::string leftOffset, length, nextChar;
 
-    while (getline(ss, leftOffset, '_')) {
-        getline(ss, length, '_');
-        getline(ss, nextChar, '_');
-        if (nextChar.empty()) { // if the delimiter is the same as the character
-            getline(ss, nextChar, '_');
-            nextChar = "_";
+    while (getline(ss, leftOffset, DELIMITER)) {
+        getline(ss, length, DELIMITER);
+        getline(ss, nextChar, DELIMITER);
+        if (nextChar.empty()) {
+            // if the delimiter is the same as the character
+            getline(ss, nextChar, DELIMITER);
+            nextChar = DELIMITER;
         }
 
-        (*decompressed) += (*decompressed).substr((*decompressed).size() - stoi(leftOffset), stoi(length));
-        if (nextChar != "00") {
-            (*decompressed) += nextChar;
+        decompressed += decompressed.substr(decompressed.size() - stoi(leftOffset), stoi(length));
+        if (nextChar != EOF_SIGN) {
+            decompressed += nextChar;
         }
     }
 }

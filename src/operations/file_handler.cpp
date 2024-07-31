@@ -1,4 +1,4 @@
-#include "FileIO.h"
+#include "file_handler.h"
 
 void FileIO::read(const std::string &filename, std::string &content) {
     std::ifstream infile(filename);
@@ -15,7 +15,7 @@ void FileIO::read(const std::string &filename, std::string &content) {
 void FileIO::write(const std::string &filename, const std::vector<std::string> &content) {
     std::ofstream outfile(filename);
 
-    for (const std::string &s: content) {
+    for (auto &s: content) {
         outfile << s;
     }
 

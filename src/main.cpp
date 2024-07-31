@@ -1,19 +1,17 @@
-#include "CommandHandler.h"
+#include "command_handler.h"
 
-using namespace std;
 
 int main(int argc, char *argv[]) {
     if (argc != 4 && argc != 5) {
-        cout << "Wrong number of arguments" << endl;
+        std::cout << "Wrong number of arguments" << std::endl;
     }
     else {
-        string command = argv[1];
-        string inputFilename = argv[2];
-        string outputFilename = argv[3];
-        string kNum = (argc == 5) ? argv[4] : "0";
+        std::string command = argv[1];
+        std::string inputFilename = argv[2];
+        std::string outputFilename = argv[3];
+        std::string kNum = (argc == 5) ? argv[4] : "0";
 
-        auto *commandHandler = new CommandHandler(inputFilename, outputFilename, command, kNum);
-        commandHandler->execute();
+        CommandHandler::execute(inputFilename, outputFilename, command, stoi(kNum));
     }
     return 0;
 }

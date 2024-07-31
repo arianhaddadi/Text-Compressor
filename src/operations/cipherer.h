@@ -5,9 +5,8 @@
 
 class Cipherer {
 public:
-    static void encrypt(int key, std::string *text);
-    static void decrypt(int key, std::string *text);
-
+    static void encrypt(int key, std::string &text);
+    static void decrypt(int key, std::string &text);
 };
 
 
