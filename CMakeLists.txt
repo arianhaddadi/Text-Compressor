@@ -6,20 +6,11 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-add_executable(deflate_caesar
-        src/main.cpp
-        src/command_handler.cpp
-        src/command_handler.h
-        src/common.h
-        src/tree/tree.cpp
-        src/tree/tree.h
-        src/tree/node.h
-        src/operations/huffman_codec.cpp
-        src/operations/huffman_codec.h
-        src/operations/file_handler.cpp
-        src/operations/file_handler.h
-        src/operations/cipherer.cpp
-        src/operations/cipherer.h
-        src/operations/lz77_codec.cpp
-        src/operations/lz77_codec.h
-)
+set(SRC_DIR src)
+set(INCLUDE_DIR include)
+
+file(GLOB_RECURSE SOURCES "${SRC_DIR}/*.cpp")
+
+include_directories(${INCLUDE_DIR})
+
+add_executable(deflate_caesar ${SOURCES})
