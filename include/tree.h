@@ -28,8 +28,8 @@ private:
 
   void fillCharFreqMap(const std::string &inputFileContent);
   void makeInitialNodes();
-  void dfs(Node *node, std::vector<std::string> &codes,
-           const std::string &code = "") const;
+  static void dfs(const Node *node, std::vector<std::string> &codes,
+           const std::string &code = "");
 };
 
 #endif // COMPRESSOR_TREE_H

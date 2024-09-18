@@ -48,10 +48,10 @@ and
 
     deflate_caesar decrypt <input file> <output file> <kNum>
 
-which `<knum>` is the offset number that all characters would 
-get shifted as much (e.g., if the characters is `a`, 
-and `kNum` is `1`, the resulting character would be 
-`b`, whose ASCII Code is `kNum` more).
+which `<knum>` is the shift value of the Caesar algorithm 
+(e.g., if the characters is `a`, and `kNum` is `1`, 
+the resulting character would be `b`, whose ASCII Code 
+is `kNum` more).
 
 An example would be:
 

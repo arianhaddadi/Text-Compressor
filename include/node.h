@@ -3,9 +3,9 @@
 
 class Node {
 public:
-  Node(unsigned char symbol, int freq, Node *right = nullptr,
+  Node(const unsigned char symbol, const int freq, Node *right = nullptr,
        Node *left = nullptr)
-      : symbol(symbol), freq(freq), right(right), left(left) {}
+      : freq(freq), symbol(symbol), right(right), left(left) {}
 
   Node *getRight() const { return right; }
 
@@ -23,7 +23,7 @@ private:
 };
 
 struct NodeComparator {
-  bool operator()(Node *lhs, Node *rhs) const {
+  bool operator()(const Node *lhs, const Node *rhs) const {
     return rhs->getFreq() <= lhs->getFreq();
   }
 };

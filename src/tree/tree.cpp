@@ -8,18 +8,17 @@ void Tree::makeTree(const std::string &inputFileContent) {
   fillCharFreqMap(inputFileContent);
   makeInitialNodes();
 
-  Node *node1, *node2, *newNode;
   while (nodesQueue.size() > 1) {
-    node1 = nodesQueue.top();
+    Node *node1 = nodesQueue.top();
     nodesQueue.pop();
 
-    node2 = nodesQueue.top();
+    Node *node2 = nodesQueue.top();
     nodesQueue.pop();
 
-    // internal nodes of the tree do not represent a character, so NULL_SYMBOL
-    // is used as their symbol
-    newNode = new Node(NULL_SYMBOL, node1->getFreq() + node2->getFreq(), node1,
-                       node2);
+    /* internal nodes of the tree do not represent a character, so NULL_SYMBOL
+     * is used as their symbol */
+    auto *newNode = new Node(NULL_SYMBOL, node1->getFreq() + node2->getFreq(),
+                             node1, node2);
 
     nodesQueue.push(newNode);
   }
@@ -29,10 +28,9 @@ void Tree::makeTree(const std::string &inputFileContent) {
 }
 
 void Tree::makeInitialNodes() {
-  Node *newNode;
   for (int i = 0; i < 256; i++) {
     if (charToFreqMap[i] > 0) {
-      newNode = new Node(i, charToFreqMap[i]);
+      auto *newNode = new Node(i, charToFreqMap[i]);
       nodesQueue.push(newNode);
     }
   }
@@ -46,8 +44,8 @@ void Tree::fillCharFreqMap(const std::string &inputFileContent) {
 
 void Tree::getCodes(std::vector<std::string> &codes) const { dfs(root, codes); }
 
-void Tree::dfs(Node *node, std::vector<std::string> &codes,
-               const std::string &code) const {
+void Tree::dfs(const Node *node, std::vector<std::string> &codes,
+               const std::string &code) {
   if (node->getRight() == nullptr && node->getLeft() == nullptr) {
     codes[node->getSymbol()] = code;
   } else {

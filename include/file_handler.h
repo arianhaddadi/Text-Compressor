@@ -1,5 +1,5 @@
-#ifndef COMPRESSOR_FILEIO_H
-#define COMPRESSOR_FILEIO_H
+#ifndef COMPRESSOR_FILE_HANDLER_H
+#define COMPRESSOR_FILE_HANDLER_H
 
 #include <string>
 #include <vector>
@@ -11,4 +11,4 @@ public:
                     const std::vector<std::string> &content);
 };
 
-#endif // COMPRESSOR_FILEIO_H
+#endif // COMPRESSOR_FILE_HANDLER_H

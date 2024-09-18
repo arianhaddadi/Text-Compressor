@@ -7,21 +7,17 @@
 
 void LZ77Codec::compress(const std::string &inputFileContent,
                          std::string &compressed) {
-  int windowSize = SLICING_WINDOW_SIZE * 1024;
-  int currentIndex = 0, matchCursorLeft, matchCursorRight, matchedLength,
-      foundMatchIndexLeft;
-  Match foundMatch;
-  std::string token;
+  constexpr int windowSize = SLICING_WINDOW_SIZE * 1024;
+  int currentIndex = 0;
   while (currentIndex < inputFileContent.size()) {
-    matchCursorLeft = std::max(0, currentIndex - windowSize);
-    foundMatch.length = 0;
-    foundMatch.index = currentIndex;
+    Match foundMatch = {currentIndex, 0};
+    int matchCursorLeft = std::max(0, currentIndex - windowSize);
     while (matchCursorLeft < currentIndex) {
       if (inputFileContent[matchCursorLeft] == inputFileContent[currentIndex]) {
-        foundMatchIndexLeft = matchCursorLeft;
-        matchCursorRight = currentIndex + 1;
+        const int foundMatchIndexLeft = matchCursorLeft;
+        int matchCursorRight = currentIndex + 1;
         matchCursorLeft++;
-        matchedLength = 1;
+        int matchedLength = 1;
         while (matchCursorLeft < currentIndex &&
                matchCursorRight < inputFileContent.size()) {
           if (matchedLength > 256 || inputFileContent[matchCursorLeft] !=
@@ -41,7 +37,7 @@ void LZ77Codec::compress(const std::string &inputFileContent,
         matchCursorLeft++;
       }
     }
-    token = std::to_string(currentIndex - foundMatch.index) + DELIMITER;
+    auto token = std::to_string(currentIndex - foundMatch.index) + DELIMITER;
     token += std::to_string(foundMatch.length) + DELIMITER;
     if (currentIndex + foundMatch.length < inputFileContent.size()) {
       token += inputFileContent[currentIndex + foundMatch.length];

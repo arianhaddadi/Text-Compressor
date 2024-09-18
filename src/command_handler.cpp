@@ -1,5 +1,5 @@
 #include "command_handler.h"
-#include "cipherer.h"
+#include "cipherist.h"
 #include "file_handler.h"
 #include "huffman_codec.h"
 #include "lz77_codec.h"
@@ -8,7 +8,7 @@
 
 void CommandHandler::execute(const std::string &inputFile,
                              const std::string &outputFile,
-                             const std::string &command, int kNum) {
+                             const std::string &command, const uint8_t kNum) {
   std::vector<std::string> result;
   std::string inputFileContent;
   FileIO::read(inputFile, inputFileContent);
@@ -17,29 +17,29 @@ void CommandHandler::execute(const std::string &inputFile,
     std::string lzCompressed;
     LZ77Codec::compress(inputFileContent, lzCompressed);
 
-    Tree *tree = new Tree();
+    auto *tree = new Tree();
     tree->makeTree(lzCompressed);
 
     std::string firstLine, huffmanCompressed;
     HuffmanCodec::compress(tree, firstLine, huffmanCompressed, lzCompressed);
     if (command == "compress_encrypt") {
-      Cipherer::encrypt(kNum, huffmanCompressed);
+      Cipherist::encrypt(kNum, huffmanCompressed);
     }
 
     result.push_back(firstLine);
     result.push_back(huffmanCompressed);
     FileIO::write(outputFile, result);
   } else if (command == "encrypt") {
-    Cipherer::encrypt(kNum, inputFileContent);
+    Cipherist::encrypt(kNum, inputFileContent);
     result.push_back(inputFileContent);
     FileIO::write(outputFile, result);
   } else if (command == "decompress" || command == "decrypt_decompress") {
-    size_t lineBreak = inputFileContent.find('\n');
-    std::string keys = inputFileContent.substr(0, lineBreak);
+    const size_t lineBreak = inputFileContent.find('\n');
+    const std::string keys = inputFileContent.substr(0, lineBreak);
     std::string compressed = inputFileContent.substr(lineBreak + 1);
 
     if (command == "decrypt_decompress") {
-      Cipherer::decrypt(kNum, compressed);
+      Cipherist::decrypt(kNum, compressed);
     }
 
     std::string huffmanDecompressed;
@@ -51,7 +51,7 @@ void CommandHandler::execute(const std::string &inputFile,
     result.push_back(lzDecompressed);
     FileIO::write(outputFile, result);
   } else if (command == "decrypt") {
-    Cipherer::decrypt(kNum, inputFileContent);
+    Cipherist::decrypt(kNum, inputFileContent);
     result.push_back(inputFileContent);
     FileIO::write(outputFile, result);
   } else {

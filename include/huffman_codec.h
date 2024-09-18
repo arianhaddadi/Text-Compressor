@@ -1,5 +1,5 @@
-#ifndef COMPRESSOR_HUFFMANCODEC_H
-#define COMPRESSOR_HUFFMANCODEC_H
+#ifndef COMPRESSOR_HUFFMAN_CODEC_H
+#define COMPRESSOR_HUFFMAN_CODEC_H
 
 #include "tree.h"
 #include <map>
@@ -7,7 +7,7 @@
 
 class HuffmanCodec {
 public:
-  static void compress(Tree *tree, std::string &firstLine,
+  static void compress(const Tree *tree, std::string &firstLine,
                        std::string &compressed, const std::string &fileContent);
   static void decompress(const std::string &keys, const std::string &compressed,
                          std::string &decompressed);
@@ -18,4 +18,4 @@ private:
                   const std::string &keys);
 };
 
-#endif // COMPRESSOR_HUFFMANCODEC_H
+#endif // COMPRESSOR_HUFFMAN_CODEC_H

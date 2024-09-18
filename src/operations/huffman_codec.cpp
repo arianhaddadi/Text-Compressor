@@ -1,6 +1,7 @@
 #include "huffman_codec.h"
 #include <bitset>
 #include <sstream>
+#include <iostream>
 
 // This is used to encode characters that did not exist in the input file
 #define CHAR_NOT_FOUND_CODE "2"
@@ -12,13 +13,13 @@ int HuffmanCodec::getHuffmanCodes(
   std::stringstream ss(keys);
   std::string key;
 
-  for (int i = 0; i < 256; i++) {
+  for (uint16_t i = 0; i < 256; i++) {
     ss >> key;
     codeToCharMap[key] = i;
   }
 
   ss >> key; // last token was the length of compressed text
-  int compressedSize = stoi(key);
+  const int compressedSize = stoi(key);
   return compressedSize;
 }
 
@@ -26,10 +27,10 @@ void HuffmanCodec::decompress(const std::string &keys,
                               const std::string &compressed,
                               std::string &decompressed) {
   std::map<std::string, unsigned char> codeToCharMap;
-  int compressedSize = getHuffmanCodes(codeToCharMap, keys);
+  const int compressedSize = getHuffmanCodes(codeToCharMap, keys);
 
   std::string compressedBits;
-  for (char c : compressed) {
+  for (const char c : compressed) {
     compressedBits += std::bitset<BYTE_LEN>(c).to_string();
   }
   if (compressedSize % BYTE_LEN != 0) {
@@ -38,7 +39,7 @@ void HuffmanCodec::decompress(const std::string &keys,
   }
 
   std::string codeToken;
-  for (char c : compressedBits) {
+  for (const char c : compressedBits) {
     codeToken += c;
     if (codeToCharMap.contains(codeToken)) {
       decompressed += codeToCharMap[codeToken];
@@ -47,28 +48,27 @@ void HuffmanCodec::decompress(const std::string &keys,
   }
 }
 
-void HuffmanCodec::compress(Tree *tree, std::string &firstLine,
+void HuffmanCodec::compress(const Tree *tree, std::string &firstLine,
                             std::string &compressed,
                             const std::string &fileContent) {
   std::vector<std::string> codes(256);
 
   tree->getCodes(codes);
   std::string compressedBits;
-  for (unsigned char c : fileContent) {
+  for (const unsigned char c : fileContent) {
     compressedBits += codes[c];
   }
 
-  std::string compressedByte;
   for (int i = 0; i < compressedBits.size(); i += BYTE_LEN) {
-    compressedByte = compressedBits.substr(i, BYTE_LEN);
+    std::string compressedByte = compressedBits.substr(i, BYTE_LEN);
     if (compressedByte.size() < BYTE_LEN) {
       /* If the number of bits is not a multiplier of BYTE_LEN, we add as many
        * "0"s as required to make the last chunk as long as BYTE_LEN. */
-      size_t substringSize = compressedByte.size();
+      const size_t substringSize = compressedByte.size();
       for (int j = 0; j < BYTE_LEN - substringSize; j++)
         compressedByte += "0";
     }
-    char c = std::bitset<BYTE_LEN>(compressedByte).to_ulong();
+    const char c = std::stoi(compressedByte, nullptr, 2);
     compressed += c;
   }
 
