@@ -1,59 +1,55 @@
-#include "command_handler.h"
-#include "cipherist.h"
-#include "file_handler.h"
-#include "huffman_codec.h"
-#include "lz77_codec.h"
-#include "tree.h"
 #include <iostream>
 
-void CommandHandler::execute(const std::string &inputFile,
-                             const std::string &outputFile,
-                             const std::string &command, const uint8_t kNum) {
+#include "cipherist.h"
+#include "command_handler.h"
+#include "file_handler.h"
+#include "huffman_codec.h"
+#include "huffman_tree.h"
+#include "lz77_codec.h"
+
+void CommandHandler::execute(const std::string &input_filename,
+                             const std::string &output_filename,
+                             const std::string &command, const uint8_t k_num) {
   std::vector<std::string> result;
-  std::string inputFileContent;
-  FileIO::read(inputFile, inputFileContent);
+  std::string input_file_content = FileIO::read(input_filename);
 
   if (command == "compress" || command == "compress_encrypt") {
-    std::string lzCompressed;
-    LZ77Codec::compress(inputFileContent, lzCompressed);
+    const std::string lz_compressed = LZ77Codec::compress(input_file_content);
 
-    auto *tree = new Tree();
-    tree->makeTree(lzCompressed);
+    auto [keys, huffman_compressed] = HuffmanCodec::compress(lz_compressed);
 
-    std::string firstLine, huffmanCompressed;
-    HuffmanCodec::compress(tree, firstLine, huffmanCompressed, lzCompressed);
     if (command == "compress_encrypt") {
-      Cipherist::encrypt(kNum, huffmanCompressed);
+      Cipherist::encrypt(k_num, huffman_compressed);
     }
 
-    result.push_back(firstLine);
-    result.push_back(huffmanCompressed);
-    FileIO::write(outputFile, result);
+    result.push_back(keys);
+    result.push_back(huffman_compressed);
+    FileIO::write(output_filename, result);
   } else if (command == "encrypt") {
-    Cipherist::encrypt(kNum, inputFileContent);
-    result.push_back(inputFileContent);
-    FileIO::write(outputFile, result);
+    Cipherist::encrypt(k_num, input_file_content);
+    result.push_back(input_file_content);
+    FileIO::write(output_filename, result);
   } else if (command == "decompress" || command == "decrypt_decompress") {
-    const size_t lineBreak = inputFileContent.find('\n');
-    const std::string keys = inputFileContent.substr(0, lineBreak);
-    std::string compressed = inputFileContent.substr(lineBreak + 1);
+    const size_t line_break = input_file_content.find('\n');
+    const std::string keys = input_file_content.substr(0, line_break);
+    std::string compressed = input_file_content.substr(line_break + 1);
 
     if (command == "decrypt_decompress") {
-      Cipherist::decrypt(kNum, compressed);
+      Cipherist::decrypt(k_num, compressed);
     }
 
-    std::string huffmanDecompressed;
-    HuffmanCodec::decompress(keys, compressed, huffmanDecompressed);
+    const std::string huffman_decompressed =
+        HuffmanCodec::decompress(keys, compressed);
 
-    std::string lzDecompressed;
-    LZ77Codec::decompress(huffmanDecompressed, lzDecompressed);
+    const std::string lz_decompressed =
+        LZ77Codec::decompress(huffman_decompressed);
 
-    result.push_back(lzDecompressed);
-    FileIO::write(outputFile, result);
+    result.push_back(lz_decompressed);
+    FileIO::write(output_filename, result);
   } else if (command == "decrypt") {
-    Cipherist::decrypt(kNum, inputFileContent);
-    result.push_back(inputFileContent);
-    FileIO::write(outputFile, result);
+    Cipherist::decrypt(k_num, input_file_content);
+    result.push_back(input_file_content);
+    FileIO::write(output_filename, result);
   } else {
     std::cout << "Wrong Command" << std::endl;
   }

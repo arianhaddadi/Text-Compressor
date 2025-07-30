@@ -5,10 +5,9 @@
 
 class LZ77Codec {
 public:
-  static void compress(const std::string &inputFileContent,
-                       std::string &compressed);
-  static void decompress(const std::string &inputFileContent,
-                         std::string &decompressed);
+  static std::string compress(const std::string &input_file_content);
+
+  static std::string decompress(const std::string &input_file_content);
 
 private:
   struct Match {
