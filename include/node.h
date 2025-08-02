@@ -3,9 +3,11 @@
 
 class Node {
 public:
-  Node(const unsigned char symbol, const int freq, Node *right = nullptr,
-       Node *left = nullptr)
+  Node(const unsigned char symbol, const int freq, Node *right, Node *left)
       : freq(freq), symbol(symbol), right(right), left(left) {}
+
+  Node(const unsigned char symbol, const int freq)
+      : freq(freq), symbol(symbol) {}
 
   Node *getRight() const { return right; }
 
@@ -18,8 +20,8 @@ public:
 private:
   int freq;
   unsigned char symbol;
-  Node *right;
-  Node *left;
+  Node *right = nullptr;
+  Node *left = nullptr;
 };
 
 struct NodeComparator {

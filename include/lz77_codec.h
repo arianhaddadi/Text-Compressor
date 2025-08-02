@@ -4,11 +4,14 @@
 #include <string>
 
 class LZ77Codec {
+  static constexpr int SLICING_WINDOW_SIZE = 32;
+  static constexpr char DELIMITER = '_';
+  static std::string EOF_SIGN;
+
 public:
-  static void compress(const std::string &inputFileContent,
-                       std::string &compressed);
-  static void decompress(const std::string &inputFileContent,
-                         std::string &decompressed);
+  static std::string compress(const std::string &input_file_content);
+
+  static std::string decompress(const std::string &input_file_content);
 
 private:
   struct Match {

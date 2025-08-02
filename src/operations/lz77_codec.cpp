@@ -1,73 +1,77 @@
 #include "lz77_codec.h"
 #include <sstream>
 
-#define SLICING_WINDOW_SIZE 32
-#define DELIMITER '_'
-#define EOF_SIGN "00"
+std::string LZ77Codec::EOF_SIGN = "00";
 
-void LZ77Codec::compress(const std::string &inputFileContent,
-                         std::string &compressed) {
-  constexpr int windowSize = SLICING_WINDOW_SIZE * 1024;
-  int currentIndex = 0;
-  while (currentIndex < inputFileContent.size()) {
-    Match foundMatch = {currentIndex, 0};
-    int matchCursorLeft = std::max(0, currentIndex - windowSize);
-    while (matchCursorLeft < currentIndex) {
-      if (inputFileContent[matchCursorLeft] == inputFileContent[currentIndex]) {
-        const int foundMatchIndexLeft = matchCursorLeft;
-        int matchCursorRight = currentIndex + 1;
-        matchCursorLeft++;
-        int matchedLength = 1;
-        while (matchCursorLeft < currentIndex &&
-               matchCursorRight < inputFileContent.size()) {
-          if (matchedLength > 256 || inputFileContent[matchCursorLeft] !=
-                                         inputFileContent[matchCursorRight]) {
+std::string LZ77Codec::compress(const std::string &input_file_content) {
+  constexpr int window_size = SLICING_WINDOW_SIZE * 1024;
+  int current_index = 0;
+  std::string compressed;
+  while (current_index < input_file_content.size()) {
+    Match found_match = {current_index, 0};
+    int match_cursor_left = std::max(0, current_index - window_size);
+    while (match_cursor_left < current_index) {
+      if (input_file_content[match_cursor_left] ==
+          input_file_content[current_index]) {
+        const int found_match_index_left = match_cursor_left;
+        int match_cursor_right = current_index + 1;
+        match_cursor_left++;
+        int matched_length = 1;
+        while (match_cursor_left < current_index &&
+               match_cursor_right < input_file_content.size()) {
+          if (matched_length > 256 ||
+              input_file_content[match_cursor_left] !=
+                  input_file_content[match_cursor_right]) {
             break;
           }
-          matchedLength++;
-          matchCursorLeft++;
-          matchCursorRight++;
+          matched_length++;
+          match_cursor_left++;
+          match_cursor_right++;
         }
-        if (matchedLength > foundMatch.length) {
-          foundMatch.length = matchedLength;
-          foundMatch.index = foundMatchIndexLeft;
+        if (matched_length > found_match.length) {
+          found_match.length = matched_length;
+          found_match.index = found_match_index_left;
         }
-        matchCursorLeft = foundMatchIndexLeft + 1;
+        match_cursor_left = found_match_index_left + 1;
       } else {
-        matchCursorLeft++;
+        match_cursor_left++;
       }
     }
-    auto token = std::to_string(currentIndex - foundMatch.index) + DELIMITER;
-    token += std::to_string(foundMatch.length) + DELIMITER;
-    if (currentIndex + foundMatch.length < inputFileContent.size()) {
-      token += inputFileContent[currentIndex + foundMatch.length];
+    auto token = std::to_string(current_index - found_match.index) + DELIMITER;
+    token += std::to_string(found_match.length) + DELIMITER;
+    if (current_index + found_match.length < input_file_content.size()) {
+      token += input_file_content[current_index + found_match.length];
       token += DELIMITER;
     } else {
       token += EOF_SIGN;
     }
-    currentIndex += foundMatch.length + 1;
+    current_index += found_match.length + 1;
     compressed += token;
   }
+  return compressed;
 }
 
-void LZ77Codec::decompress(const std::string &inputFileContent,
-                           std::string &decompressed) {
-  std::stringstream ss(inputFileContent);
-  std::string leftOffset, length, nextChar;
+std::string LZ77Codec::decompress(const std::string &input_file_content) {
+  std::string decompressed;
 
-  while (getline(ss, leftOffset, DELIMITER)) {
+  std::stringstream ss(input_file_content);
+  std::string left_offset, length, next_char;
+
+  while (getline(ss, left_offset, DELIMITER)) {
     getline(ss, length, DELIMITER);
-    getline(ss, nextChar, DELIMITER);
-    if (nextChar.empty()) {
+    getline(ss, next_char, DELIMITER);
+    if (next_char.empty()) {
       // if the delimiter is the same as the character
-      getline(ss, nextChar, DELIMITER);
-      nextChar = DELIMITER;
+      getline(ss, next_char, DELIMITER);
+      next_char = DELIMITER;
     }
 
-    decompressed += decompressed.substr(decompressed.size() - stoi(leftOffset),
+    decompressed += decompressed.substr(decompressed.size() - stoi(left_offset),
                                         stoi(length));
-    if (nextChar != EOF_SIGN) {
-      decompressed += nextChar;
+    if (next_char != EOF_SIGN) {
+      decompressed += next_char;
     }
   }
+
+  return decompressed;
 }

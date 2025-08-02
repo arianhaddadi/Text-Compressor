@@ -6,7 +6,8 @@
 
 class FileIO {
 public:
-  static void read(const std::string &filename, std::string &content);
+  static std::string read(const std::string &filename);
+
   static void write(const std::string &filename,
                     const std::vector<std::string> &content);
 };

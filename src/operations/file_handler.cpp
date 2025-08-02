@@ -1,7 +1,9 @@
 #include "file_handler.h"
 #include <fstream>
 
-void FileIO::read(const std::string &filename, std::string &content) {
+std::string FileIO::read(const std::string &filename) {
+  std::string content;
+
   std::ifstream infile(filename);
 
   std::string line;
@@ -11,13 +13,15 @@ void FileIO::read(const std::string &filename, std::string &content) {
   content.erase(content.size() - 1);
 
   infile.close();
+
+  return content;
 }
 
 void FileIO::write(const std::string &filename,
                    const std::vector<std::string> &content) {
   std::ofstream outfile(filename);
 
-  for (auto &s : content) {
+  for (const auto &s : content) {
     outfile << s;
   }
 

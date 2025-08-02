@@ -1,6 +1,7 @@
 #ifndef COMPRESSOR_CIPHERER_H
 #define COMPRESSOR_CIPHERER_H
 
+#include <cstdint>
 #include <string>
 
 class Cipherist {
