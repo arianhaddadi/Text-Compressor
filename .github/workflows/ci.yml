@@ -1,0 +1,36 @@
+name: Compressor CI
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Project
+        run: make
+      - name: Upload Binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-binary
+          path: ./build/bin/deflate_caesar
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Binary
+        uses: actions/download-artifact@v4
+        with:
+          name: my-binary
+      - name: Make binary executable
+        run: chmod +x ./deflate_caesar
+      - name: Test binary
+        run: |
+          ./deflate_caesar compress_encrypt ./samples/input2.txt ./samples/input2_compressed.txt 78
+          ./deflate_caesar decrypt_decompress ./samples/input2_compressed.txt ./samples/input2_decompressed.txt 78
+          diff ./samples/input2.txt ./samples/input2_decompressed.txt
+
